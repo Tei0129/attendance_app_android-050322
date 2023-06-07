@@ -1,0 +1,141 @@
+<ion-header mode="md">
+  <ion-toolbar>
+  	<ion-buttons slot="start">
+  		<ion-menu-button>
+  		</ion-menu-button>
+  	</ion-buttons>
+  	<ion-buttons slot="end">
+  		<ion-back-button>
+  		</ion-back-button>
+  	</ion-buttons>
+    <ion-title>{{'user_profile.title'| translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+	<ion-list lines="none" class="list">
+
+		<ion-item lines="none" class="item">
+			<ion-label position="floating">{{'user_profile.email'| translate}}</ion-label>
+			<ion-input type="text" [(ngModel)]="user.email_id"   placeholder="{{'user_profile.email'| translate}}"></ion-input>
+		</ion-item>
+		<ion-item lines="none" class="item">
+			<ion-label position="floating">{{'user_profile.name'| translate}}</ion-label>
+			<ion-input type="text" [(ngModel)]="user.first_name"   placeholder="{{'user_profile.name'| translate}}"></ion-input>
+		</ion-item>
+		<ion-item lines="none" class="item">
+			<ion-label position="floating">{{'add_users.user_id'| translate}}</ion-label>
+			<ion-input type="text" [(ngModel)]="user.username"   placeholder="{{'add_users.user_id'| translate}}" readonly="true"></ion-input>
+		</ion-item>
+		<ion-item lines="none" class="item">
+			<ion-label position="floating">{{'user_profile.password'| translate}}</ion-label>
+			<ion-input type="password" [(ngModel)]="user.password"  placeholder="{{'user_profile.password'| translate}}"></ion-input>
+		</ion-item>
+		<ion-item lines="none" class="item">
+			<ion-label position="floating">{{'user_profile.c_pass'| translate}}</ion-label>
+			<ion-input type="password" [(ngModel)]="user.c_pass"  placeholder="{{'user_profile.c_pass'| translate}}"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>{{'user_profile.user_type' | translate}}</ion-label>
+			<ion-select interface="action-sheet" mode="ios" [(ngModel)]="user.user_type"   [value]="user.user_type">
+			  <ion-select-option value="3">{{'user_profile.Moderator'| translate}}</ion-select-option>
+			  <ion-select-option value="1">{{'user_profile.Admin'| translate}}</ion-select-option>
+			  <ion-select-option value="2">{{'user_profile.Teacher'| translate}}</ion-select-option>
+			  <ion-select-option value="4">{{'user_profile.Parent'| translate}}</ion-select-option>
+			  <ion-select-option value="5">{{'user_profile.Register'| translate}}</ion-select-option>
+			  <ion-select-option value="6">{{'user_profile.Medical'| translate}}</ion-select-option>
+			  <ion-select-option value="7">{{'user_profile.Viewer'| translate}}</ion-select-option>
+			</ion-select>
+		  </ion-item>
+	</ion-list>
+	<!-- <div class="radio-div">
+		<ion-radio-group [(ngModel)]="user.user_type"   [value]="user.user_type">
+				<h3 class="radio-head">{{'user_profile.user_type'| translate}}</h3>
+			<ion-row class="user_type">
+				<ion-col size="4" >
+					      <ion-radio value="3"></ion-radio>
+					      <div>	
+					      	<ion-label>{{'user_profile.Moderator'| translate}}</ion-label>
+					      </div>
+				</ion-col>
+				<ion-col size="4" >
+					      <ion-radio value="1"></ion-radio>
+					      <div>	
+					      	<ion-label>{{'user_profile.Admin'| translate}}</ion-label>
+					      </div>
+				</ion-col>
+				
+				<ion-col size="4" >
+					      <ion-radio value="5"></ion-radio>
+					      <div>	
+					      	<ion-label>{{'user_profile.Register'| translate}}</ion-label>
+					      </div>
+				</ion-col>
+				<ion-col size="4" >
+					      <ion-radio value="6"></ion-radio>
+					      <div>	
+					      	<ion-label>{{'user_profile.Medical'| translate}}</ion-label>
+					      </div>
+				</ion-col>
+				<ion-col size="4" >
+					      <ion-radio value="7"></ion-radio>
+					      <div>	
+					      	<ion-label>{{'user_profile.Viewer'| translate}}</ion-label>
+					      </div>
+				</ion-col>
+			</ion-row>
+		</ion-radio-group>
+	</div> -->
+	<ion-row class="time-row">
+		<ion-item>
+			<ion-toggle color="primary" slot="end" (ionChange)="check()" [(ngModel)]="user.attendence_permit" ></ion-toggle>
+			<h3>{{'user_profile.edit_permission'| translate}}</h3>
+		</ion-item>
+		<ion-item class="input-item">
+			<div>
+				<ion-input [(ngModel)]="user.time"  type="number" placeholder="{{'user_profile.time'|translate}}" ></ion-input>
+				<span>{{'user_profile.note'| translate}}: {{'user_profile.input_time_type'| translate}}
+				</span>
+			</div>
+		</ion-item>
+		<ion-item>
+			<ion-label>{{'user_profile.class'| translate}}</ion-label>
+			 <ionic-selectable style="height: 6vh; margin-top: -2px;overflow: hidden;" 
+			  [ngModelOptions]="{standalone: true}"
+			  [(ngModel)]="user.class"
+			  [isMultiple]="true"
+			  [items]="classes"
+			  itemValueField="cid"
+			  itemTextField="name"
+			  (onChange)="portChange($event)"
+			  [canSearch]="true">
+			</ionic-selectable>
+		  </ion-item>
+	</ion-row>
+	<ion-list >
+	  <ion-radio-group [value]="user.status" [(ngModel)]="user.status">
+	    <ion-list-header>
+	      <h3>{{'user_profile.action'| translate}}</h3>
+	    </ion-list-header>
+	    <ion-row>
+	    	<ion-col size="6">
+			    <ion-item>
+			      <ion-label>{{'user_profile.inactive'| translate}}</ion-label>
+			      <ion-radio slot="start" value="0"></ion-radio>
+			    </ion-item>
+	    	</ion-col>
+	    	<ion-col size="6">
+			    <ion-item>
+			      <ion-label>{{'user_profile.active'| translate}}</ion-label>
+			      <ion-radio slot="start" value="1"></ion-radio>
+			    </ion-item>
+	    	</ion-col>
+	    </ion-row>
+	  </ion-radio-group>
+	</ion-list>
+</ion-content>
+<ion-footer style="background: #fff;">
+	<ion-button style="width: 99%;"  expand="" class="btn-primary" shape="round" color="primary" (click)="saveUserProfile()"><ion-spinner name="crescent" *ngIf="show_save_user_spinner"></ion-spinner><span *ngIf="!show_save_user_spinner"> {{'user_profile.save' | translate}} </span></ion-button>
+
+	<ion-button style="width: 99%;"   expand="block" class="btn-primary" shape="round" color="danger" (click)="deleteUser()"> <ion-spinner name="crescent" *ngIf="show_delete_user_spinner"></ion-spinner><span *ngIf="!show_delete_user_spinner">{{'user_profile.delete' | translate}}</span> </ion-button>
+</ion-footer>

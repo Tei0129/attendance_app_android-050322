@@ -1,0 +1,567 @@
+<!-- <ion-modal>
+  <ng-template> -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-title style="font-size: 15px;">{{'create_notes.model_title' | translate}}</ion-title>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismiss()"><ion-icon name="close" class="att-icon" color="dark">
+          </ion-icon></ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <!-- <ion-card> -->
+        <!-- <ion-list> -->
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١۔حضور المتعلم ومواظبته والتزامه بالمواعيد أثناء الحصة الدراسية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                     
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(0, i)">
+                        <h5 style="text-align: center; font-size: 14px;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[0] === (5 - i)" color="light" [ngClass]="{'present': postData[0] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>حضور المتعلم ومواظبته والتزامه بالمواعيد أثناء الحصة الدراسية</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[0]}" (click)="selectStarsForRating(0, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٢۔التعاون مع الزملاء المتعلمين أثناء الحصة الدراسية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(1, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[1] === (5 - i)" color="light" [ngClass]="{'present': postData[1] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>التعاون مع الزملاء المتعلمين أثناء الحصة الدراسية:</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[1]}" (click)="selectStarsForRating(1, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٣۔يعتمد سلوك المتعلم على احترام زملائه</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(2, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[2] === (5 - i)" color="light" [ngClass]="{'present': postData[2] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>يعتمد سلوك المتعلم على احترام زملائه:</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[2]}" (click)="selectStarsForRating(2, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٤۔ترتبط العلاقة بين المتعلم والمعلم على أساس الاحترام المتبادل</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(3, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[3] === (5 - i)" color="light" [ngClass]="{'present': postData[3] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>ترتبط العلاقة بين المتعلم والمعلم على أساس الاحترام المتبادل</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[3]}" (click)="selectStarsForRating(3, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٥۔الالتزام بضوابط المحافظة على الممتلكات العامة</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(4, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[4] === (5 - i)" color="light" [ngClass]="{'present': postData[4] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>الالتزام بضوابط المحافظة على الممتلكات العامة</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[4]}" (click)="selectStarsForRating(4, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٦۔مدى إدراك المتعلم بحقوقه والتزامه بواجباته</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(5, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[5] === (5 - i)" color="light" [ngClass]="{'present': postData[5] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>مدى إدراك المتعلم بحقوقه والتزامه بواجباته</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[5]}" (click)="selectStarsForRating(5, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٧۔مدى فهم واستيعاب المتعلم للنظم واللوائح داخل المؤسسة التعليمية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(6, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[6] === (5 - i)" color="light" [ngClass]="{'present': postData[6] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>مدى فهم واستيعاب المتعلم للنظم واللوائح داخل المؤسسة التعليمية</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[6]}" (click)="selectStarsForRating(6, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٨۔الاهتمام والتركيز في المشاركة أثناء الحصة الدراسية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(7, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[7] === (5 - i)" color="light" [ngClass]="{'present': postData[7] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>الاهتمام والتركيز في المشاركة أثناء الحصة الدراسية</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[6]}" (click)="selectStarsForRating(7, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>٩۔قدرة المتعلم على الاستيعاب الذهني أثناء الحصة الدراسية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(8, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[8] === (5 - i)" color="light" [ngClass]="{'present': postData[8] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>قدرة المتعلم على الاستيعاب الذهني أثناء الحصة الدراسية</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[7]}" (click)="selectStarsForRating(8, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٠۔قدرة المتعلم على القراءة بطلاقة مع الفهم الدقيق للمعاني</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(9, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[9] === (5 - i)" color="light" [ngClass]="{'present': postData[9] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>قدرة المتعلم على القراءة بطلاقة مع الفهم الدقيق للمعاني</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[8]}" (click)="selectStarsForRating(9, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١١۔قدرة المتعلم على تنظيم الأفكار والتعبير عنها كتابياً</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(10, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[10] === (5 - i)" color="light" [ngClass]="{'present': postData[10] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>قدرة المتعلم على تنظيم الأفكار والتعبير عنها كتابياً</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[9]}" (click)="selectStarsForRating(10, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٢۔يُظهر المتعلم موقفاً مسؤولاً ولدية قدرة على اتخاذ القرار بالاعتماد على نفسة</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(11, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[11] === (5 - i)" color="light" [ngClass]="{'present': postData[11] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>يُظهر المتعلم موقفاً مسؤولاً ولدية قدرة على اتخاذ القرار بالاعتماد على نفسة</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[10]}" (click)="selectStarsForRating(11, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٣۔مدى الاستفادة من حصيلة المعارف والمهارات السابقة في الاختبار العملي</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(12, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[12] === (5 - i)" color="light" [ngClass]="{'present': postData[12] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>مدى الاستفادة من حصيلة المعارف والمهارات السابقة في الاختبار العملي</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[11]}" (click)="selectStarsForRating(12, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٤۔مستوى تحصيل المتعلم دراسياً قياساً بأهداف المادة الدراسية</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(13, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[13] === (5 - i)" color="light" [ngClass]="{'present': postData[13] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>مستوى تحصيل المتعلم دراسياً قياساً بأهداف المادة الدراسية</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[12]}" (click)="selectStarsForRating(13, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٥۔قدرة المتعلم على اجراء العمليات الحسابية بهدف حل المشكلات والتفكير الناقد</h3>
+                  </ion-col>
+                </ion-row>
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(14, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[14] === (5 - i)" color="light" [ngClass]="{'present': postData[14] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <h3>قدرة المتعلم على اجراء العمليات الحسابية بهدف حل المشكلات والتفكير الناقد</h3><br>
+              <span *ngFor="let star of stars_array;let i = index;">
+                <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[13]}" (click)="selectStarsForRating(14, i)"></ion-icon>
+              </span> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <h3>١٦۔مهارات الابتكار والتخطيط في أداء المشاريع</h3>
+                  </ion-col>
+                </ion-row>
+               
+                <!-- <span *ngFor="let star of stars_array;let i = index;">
+                  <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[14]}" (click)="selectStarsForRating(15, i)"></ion-icon>
+                  [ngClass]="{'present': student.sheet['cem-'+ (i+1)] == '1', 'absent': student.sheet['cem-'+ (i+1)] == '0', 'delay': student.sheet['cem-'+ (i+1)] == '3', '': student.sheet['cem-'+ (i+1)] == 'undefined'}"
+                </span> -->
+                <ion-row> 
+                  <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+                    <div class="left-direction checkbox-container">
+                      <div class="checkbox-icon" *ngFor="let sem of stars_array; let i = index;"
+                        (click)="selectStarsForRating(15, i)">
+                        <h5 style="text-align: center;">{{sem.title}}</h5>
+                        <div class="checkbox-remove">
+                          <ion-icon name="checkmark" class="att-icon" *ngIf="postData[15] === (5 - i)" color="light" [ngClass]="{'present': postData[15] === (5 - i)}">
+                          </ion-icon>
+                          <!-- <ion-icon name="close" class="att-icon" *ngIf="postData[0] === (i+1)" color="success">
+                          </ion-icon> -->
+                          <!-- <ion-icon name="remove" class="att-icon" *ngIf="postData[0] !== (i + 1)" color="danger">
+                          </ion-icon> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!-- <ion-col size="12" align-self-center>
+                <div class="left-direction checkbox-container">
+                  <div class="checkbox-icon" *ngFor="let sem of getSemArray(); let i = index;"
+                    (click)="showTeacherName(attendanceResponse.semteacher['sem-' + (i + 1)])">
+                    <div class="sem-number-outer"
+                      >
+                      {{i+1}}</div>
+                  </div>
+                </div>
+              </ion-col> -->
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-textarea rows="6" [(ngModel)]="noteMessage" placeholder="{{'student-details.type_here' | translate}}"></ion-textarea>
+            </ion-item>
+          </ion-card>
+        <!-- </ion-list> [ngClass]="{'att-not-marked': attendanceResponse.semteacher['sem-' + (i + 1)] == undefined ,'att-marked': attendanceResponse.semteacher['sem-' + (i + 1)] != undefined }" -->
+      <!-- </ion-card> -->
+      <ion-button expand="block" (click)="onClickSend()">{{'contact.submit' | translate}}</ion-button>
+    </ion-content>
+  <!-- </ng-template>
+</ion-modal> -->

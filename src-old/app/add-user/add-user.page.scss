@@ -1,0 +1,36 @@
+.content{
+    height: 100%;
+    padding: 12px;
+    background: #f1f1f1;
+
+	.btn{
+		margin:20px;
+	}
+}
+.valid-input{
+    color: green;
+}
+.invalid-input{
+    color: red;
+}
+.time-row{
+    border: 1px solid gray;
+    margin: 14px;
+    ion-item{
+        width: 100%; 
+    }
+    .input-item{
+        --min-height: 75px;
+        ion-input{
+            --padding-start: 5px;
+            border: 1px solid black;
+            width: 167px;
+		    height: 33px;
+            border-radius: 6px;
+        }
+        span{
+            font-size: 11px;
+            color: red;
+        }
+    }
+}

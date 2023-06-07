@@ -1,0 +1,20 @@
+{
+    "android": {
+        "debug": {
+            "keystore": "attendanceApp.keystore",
+            "storePassword": "xbx3123XBX#!@#",
+            "alias": "AttendanceApp",
+            "password" : "xbx3123XBX#!@#",
+            "keystoreType": "",
+            "packageType": "apk"
+        },
+        "release": {
+            "keystore": "attendanceApp.keystore",
+            "storePassword": "xbx3123XBX#!@#",
+            "alias": "AttendanceApp",
+            "password" : "xbx3123XBX#!@#",
+            "keystoreType": "",
+            "packageType": "apk"
+        }
+    }
+}

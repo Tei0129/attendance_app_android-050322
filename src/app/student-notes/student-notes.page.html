@@ -1,0 +1,56 @@
+<ion-header mode="md">
+  <ion-toolbar>
+  	<ion-buttons slot="start">
+  		<ion-menu-button></ion-menu-button>
+  	</ion-buttons>
+	  <ion-buttons slot="secondary">
+		<ion-button class="small_btn_header" style="margin-left:12px;" small clear icon-only (click)="openCalModal()">
+		  <ion-icon name="calendar-outline" color="icon-header"></ion-icon>
+	  </ion-button>
+  </ion-buttons>
+    <ion-title>{{'student_notes.pagetitle' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+	  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+	    <ion-refresher-content>
+	    </ion-refresher-content>
+	  </ion-refresher>
+    <div *ngIf="notes">
+		<ion-card *ngFor=" let note of notes">
+			<ion-card-header>
+				<span *ngIf="note.send_to!='exam' && note.datetime" style="float: left;">{{note.datetime}}</span>
+				<span *ngIf="note.send_to=='exam' && note.examNoteDate" style="float: left;">{{note.examNoteDate}}</span>
+				<ion-item style="width: 100%;">
+					<ion-avatar slot="start">
+						<img src="{{note.created_by.pic}}">
+					</ion-avatar>
+					<ion-label>
+						<h3>{{note.created_by.first_name}}</h3>
+						<!-- <p>{{note.created_by.email_id}}</p> -->
+					</ion-label>
+				</ion-item>
+			</ion-card-header>
+			<ion-card-content>
+				<p>
+					{{note.description}}
+				</p>
+				<div *ngIf="note.file_link" class="pdf-div" (click)="openPdf(note.file_link)">
+		          <img  [src]="'bullet.documents.image'" onerror="this.onerror=null;this.src='assets/imgs/pdfnew.png';">
+		            <!-- <ion-icon name="document-attach-outline"></ion-icon> -->
+		        </div>
+				<a *ngIf="note.pdf" (click)="openPdf(note.pdf)" href="">
+					<ion-icon name="attach"></ion-icon>
+				</a>
+				<img *ngIf="note.image_file" [src]="note.image_file" class="images" (click)="showPhoto(note.image_file)">
+			</ion-card-content>
+		</ion-card>
+    </div>
+    <div class="notes" *ngIf="noData">
+    	<div class="no-data">
+    		{{'student_notes.no_note' | translate}}
+    	</div>
+    </div>
+
+</ion-content>

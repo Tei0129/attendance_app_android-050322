@@ -1,0 +1,34 @@
+
+<ion-header mode="md">
+  <ion-toolbar>
+  	<ion-buttons slot="end">
+  		<ion-back-button></ion-back-button>
+  	</ion-buttons>
+     <ion-toolbar>
+     	<ion-title>{{'sidemenu.tasks_calendar' | translate}} </ion-title>
+      </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="students" *ngIf="true" > 
+		<!-- <ion-virtual-scroll [items]="students" approxItemHeight="320px"> -->
+		<ion-card  class="text-left body-font card heigt-min"  *ngFor="let course of classes; let i=index">		
+			<ion-item>
+				<ion-checkbox slot="end" id="ch{{i}}" (ionChange)="selectUser(course,$event,i)"></ion-checkbox>
+				<!-- <ion-avatar slot="start">
+					<img [src]="users.pic"  onerror="this.onerror=null;this.src='assets/imgs/logo.png';">
+				</ion-avatar> -->
+			    <ion-label>
+			    	<h4>{{course.name}}</h4>
+			    	<p>{{course.desc}}</p> 
+			    </ion-label>
+			</ion-item>  
+		</ion-card> 
+			<!-- </ion-virtual-scroll> -->
+	</div>
+</ion-content>
+<ion-footer style="background: white;">
+	<ion-button *ngIf="type!='create'" expand="block" shape="round" color="primary" (click)="openCalendar()">
+		{{'alertmessages.alert_btn_submit_text' | translate}}
+	</ion-button>
+	</ion-footer>

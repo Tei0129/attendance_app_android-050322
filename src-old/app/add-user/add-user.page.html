@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar>
+  	<ion-buttons slot="end">
+  		<ion-back-button></ion-back-button>
+  	</ion-buttons>
+    <ion-title>{{'add_users.title' | translate}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+		<ion-list class="form-list">
+			<ion-item>
+				<ion-label>{{'add_users.Email' | translate}}</ion-label>
+				<ion-input type="email" [(ngModel)]="usersData.email_id"></ion-input>
+				<ion-icon *ngIf="(usersData.email_id && !email_validation) && submitted" slot="end" class="valid-input" name="checkmark-circle-outline"></ion-icon>
+				<ion-icon *ngIf="(!usersData.email_id || email_validation) && submitted" slot="end" class="invalid-input" name="close-circle-outline"></ion-icon>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'add_users.Name' | translate}}</ion-label>
+				<ion-input type="text" [(ngModel)]="usersData.first_name"></ion-input>
+				<ion-icon *ngIf="usersData.first_name && !user_name_validation && submitted" slot="end" class="valid-input" name="checkmark-circle-outline"></ion-icon>
+				<ion-icon *ngIf="!usersData.first_name && user_name_validation && submitted" slot="end" class="invalid-input" name="close-circle-outline"></ion-icon>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'add_users.user_id' | translate}}</ion-label>
+				<ion-input type="text" [(ngModel)]="usersData.username"></ion-input>
+				<ion-icon *ngIf="usersData.username && !user_id_required && submitted" slot="end" class="valid-input" name="checkmark-circle-outline"></ion-icon>
+				<ion-icon *ngIf="!usersData.username && user_id_required && submitted" slot="end" class="invalid-input" name="close-circle-outline"></ion-icon>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'add_users.Password' | translate}}</ion-label>
+				<ion-input type="password" [(ngModel)]="usersData.password"></ion-input>
+				<ion-icon *ngIf="usersData.password && !password_validation && submitted" slot="end" class="valid-input" name="checkmark-circle-outline"></ion-icon>
+				<ion-icon *ngIf="!usersData.password && password_validation && submitted" slot="end" class="invalid-input" name="close-circle-outline"></ion-icon>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'add_users.confirm_password' | translate}}</ion-label>
+				<ion-input type="password" [(ngModel)]="usersData.confirm_password"></ion-input>
+				<ion-icon *ngIf="usersData.confirm_password && !confirm_password_validation && submitted" slot="end" class="valid-input" name="checkmark-circle-outline"></ion-icon>
+				<ion-icon *ngIf="!usersData.confirm_password && confirm_password_validation && submitted" slot="end" class="invalid-input" name="close-circle-outline"></ion-icon>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'user_profile.user_type' | translate}}</ion-label>
+				<ion-select interface="action-sheet" mode="ios" [(ngModel)]="usersData.user_type" [value]="usersData.user_type">
+				  <ion-select-option value="3">{{'user_profile.Moderator'| translate}}</ion-select-option>
+				  <ion-select-option value="1">{{'user_profile.Admin'| translate}}</ion-select-option>
+				  <ion-select-option value="2">{{'user_profile.Teacher'| translate}}</ion-select-option>
+				  <ion-select-option value="4">{{'user_profile.Parent'| translate}}</ion-select-option>
+				  <ion-select-option value="5">{{'user_profile.Register'| translate}}</ion-select-option>
+				  <ion-select-option value="6">{{'user_profile.Medical'| translate}}</ion-select-option>
+				  <ion-select-option value="7">{{'user_profile.Viewer'| translate}}</ion-select-option>
+				</ion-select>
+			  </ion-item>
+		</ion-list>
+		<ion-row class="time-row">
+			<ion-item>
+				<ion-toggle slot="end" color="primary" (onChange)="check()" [(ngModel)]="usersData.attendence_permit"></ion-toggle>			
+                <h3>{{'user_profile.edit_permission'| translate}}</h3>
+			</ion-item>
+			<ion-item class="input-item">
+				<div>
+					<ion-input type="number" [(ngModel)]="usersData.time" placeholder="{{'user_profile.time' | translate}}"></ion-input>
+					<span>{{'user_profile.note'|translate}} : {{'user_profile.input_time_type'| translate}}</span>
+				</div>
+				
+			</ion-item>
+			<ion-item>
+				<ion-label>{{'teacher_profile.class'| translate}}</ion-label>
+				<ionic-selectable style="height: 6vh; margin-top: -2px;overflow: hidden;" 
+				  [(ngModel)]="usersDataclass"
+				  [isMultiple]="true"
+				  [items]="classes"
+				  itemValueField="cid"
+				  itemTextField="name"
+				  (onChange)="portChange($event)"
+				  [canSearch]="true">
+				</ionic-selectable>
+			  </ion-item>
+		</ion-row>
+		<div class="radio-div">
+			<!-- <ion-radio-group [(ngModel)]="usersData.user_type" [value]="usersData.user_type">
+					<h3 class="radio-head">{{'user_profile.user_type'| translate}}</h3>
+				<ion-row class="user_type">
+					<ion-col size="4" >
+							  <ion-radio value="3"></ion-radio>
+							  <div>	
+								  <ion-label>{{'user_profile.Moderator'| translate}}</ion-label>
+							  </div>
+					</ion-col>
+					<ion-col size="4" >
+							  <ion-radio value="1"></ion-radio>
+							  <div>	
+								  <ion-label>{{'user_profile.Admin'| translate}}</ion-label>
+							  </div>
+					</ion-col>
+					<ion-col size="4" >
+							  <ion-radio value="5"></ion-radio>
+							  <div>	
+								  <ion-label>{{'user_profile.Register'| translate}}</ion-label>
+							  </div>
+					</ion-col>
+					<ion-col size="4" >
+							  <ion-radio value="6"></ion-radio>
+							  <div>	
+								  <ion-label>{{'user_profile.Medical'| translate}}</ion-label>
+							  </div>
+					</ion-col>
+					<ion-col size="4" >
+							  <ion-radio value="7"></ion-radio>
+							  <div>	
+								  <ion-label>{{'user_profile.Viewer'| translate}}</ion-label>
+							  </div>
+					</ion-col>
+				</ion-row>
+			</ion-radio-group> -->
+			<!-- <ion-list>
+				
+			  </ion-list> -->
+		</div>
+		
+		<div class="btn">
+			<ion-button expand="block" (click)="submit()"><ion-spinner name="crescent" *ngIf="show_save_user_spinner"></ion-spinner><span *ngIf="!show_save_user_spinner"> {{'add_users.Submit' | translate}} </span></ion-button>
+		</div>
+	</div>
+</ion-content>

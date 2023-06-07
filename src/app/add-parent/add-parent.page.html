@@ -1,0 +1,54 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title text-right>{{'reg_parent.pagetitle' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding mode="md">
+  <form [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item class="background-input">
+        <ion-label color="dark" position="floating">{{'reg_parent.parentid' | translate}}</ion-label>
+        <ion-input type="text" formControlName="parentID" #parentID pattern="[0-9]*$"
+          (keypress)="_keyPress($event)" text-right required>
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f.parentID.errors" class="alert alert-danger">
+        <div *ngIf="f.parentID.errors.required">{{'validations.required' | translate}}</div>
+        <div *ngIf="parentID.errors.pattern">{{'validations.invalidparentId' | translate}}</div>
+      </div>
+
+      <ion-item class="background-in  put">
+        <ion-label color="dark" position="floating">{{'reg_parent.parentname' | translate}}</ion-label>
+        <ion-input type="text" formControlName="parentName" text-right required>
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f.parentName.errors" class="alert alert-danger">
+        <div *ngIf="f.parentName.errors.require">{{'validations.required' | translate}}</div>
+      </div>
+
+      <ion-item class="background-input">
+        <ion-label color="dark" position="floating">{{'reg_parent.parentpassword' | translate}}</ion-label>
+        <ion-input type="password" formControlName="parentPassword" text-right required></ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f.parentPassword.errors" class="alert alert-danger">
+        <div *ngIf="f.parentPassword.errors.require">{{'validations.required' | translate}}</div>
+      </div>
+
+      <ion-item class="background-input">
+        <ion-label color="dark" position="floating">{{'reg_parent.studentname' | translate}}</ion-label>
+        <ionic-selectable formControlName="selected_student" [items]="students" itemValueField="sid"
+          itemTextField="name" [canSearch]="true" [isMultiple]="true">
+        </ionic-selectable>
+      </ion-item>
+
+      <ion-row padding>
+        <ion-button type="submit" expand="full" class="btn-primary" shape="round" color="primary"
+          [disabled]="parentForm.invalid">{{'reg_parent.reg_btn' | translate}}</ion-button>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>

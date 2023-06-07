@@ -1,0 +1,189 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button>
+      </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-row>
+      <ion-col size="6" align-self-center no-padding text-right>
+        <div class="title" (click)="openCalenderModal()">{{dateSelected | date: 'mediumDate'}}</div>
+      </ion-col>
+      <ion-col size="6" align-self-center no-padding style="direction: ltr;">
+        <ion-buttons start clear>
+          <ion-button class="small_btn_header" small clear icon-only (click)="deleteStudentMarks()">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button class="small_btn_header" small clear icon-only (click)="presentPrintOption()">
+            <ion-icon name="print-outline"></ion-icon>
+          </ion-button>
+          <ion-button class="small_btn_header" small clear icon-only (click)="addFields()">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  <ion-list padding no-margin>
+    <ion-row>
+      <ion-col size="4" col-sm-2 align-self-center style="padding-right: 18px; color:#000;" class="text-right" text-right>
+        {{courseInfo.name}}
+      </ion-col>
+      <ion-col size="8" col-sm-10 align-self-center>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+  <div style="padding:10px;background: white;color:#000;">{{attendanceResponse.submittedMsg}}</div>
+</ion-header>
+
+<ion-content mode="md">
+  <div class="main-content">
+    <ion-list padding *ngIf="attendanceResponse.students?.length > 0" margin-top>
+      <ion-row class="right-direction student-card"
+        *ngFor="let student of attendanceResponse.students; let sno = index;">
+        <ion-col size="10" col-sm-11>
+          <ion-row>
+            <ion-col size="3" align-self-center class="text-center" class="left-direction">
+              <ion-button fill="clear" *ngIf="userType != '4' && canAddStudentNote" (click)="presentNoteActionSheet(student)">
+                <ion-icon name="add-circle" class="add-note" item-end color="icon-header"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="9" align-self-center class="text-right" class="left-direction">
+              <h4><span class="serial-number">{{sno+1}}.</span> {{student.name}}</h4>
+              <p class="student-behaviour">{{student.studentBehaviour}}</p>
+            </ion-col>
+
+          </ion-row>
+        </ion-col>
+        <ion-col size="2" col-sm-1 align-self-center>
+          <ion-item class="item-img" lines="none">
+            <ion-avatar (click)="openUserImageModal(student)">
+              <img [src]="student.pic">
+            </ion-avatar>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+          <ion-row style="direction: rtl;" class="marks-row" *ngIf="student.sheet.length">
+            <ion-col size="4" class="marks-col" *ngFor="let sheet of student.sheet">
+              <p>{{sheet.field_name}}</p>
+              <ion-input [value]="sheet.marks" [max]="sheet.field_max_marks" class="inp-marks" debounce="500"
+                type="number" (ionChange)="changeMarks($event,student,sheet)"></ion-input>
+            </ion-col>
+            <!-- <ion-col size="4" class="marks-col">
+        			<p>{{'followUp_student.participation_mark' |translate}}</p>
+        			<ion-input [value]="student" class="inp-marks" debounce="300" type="number" (ionChange)="changeMarks($event,student,'participation_mark')"></ion-input>
+        		</ion-col> -->
+            <!-- <ion-col size="4" class="marks-col">
+        			<p>{{'followUp_student.assessments_mark' | translate}}</p>
+        			<ion-input [value]="student" class="inp-marks" debounce="300" type="number" (ionChange)="changeMarks($event,student,'assessments_mark')"></ion-input>
+        		</ion-col> -->
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-button expand="block" class="btn-primary margin" color="primary" (click)="submitMarks()"
+        *ngIf="!isHoliday && userType != '7'">{{'list-student.submitbtn' | translate}}</ion-button>
+    </ion-list>
+    <ion-label margin-top padding-top item-center class="norecord-found"
+      *ngIf="attendanceResponse.students?.length == 0">{{noDataFound}}
+    </ion-label>
+    <div margin-top padding-top item-center class="students" id="students" *ngIf="show_loading"> 
+      <ion-card  class="text-left body-font card heigt-min" *ngFor="let dummy of ' '.repeat(20).split(''), let x = index">		
+        <ion-item>
+          <ion-avatar slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <h4><ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text></h4>
+            <p><ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text></p>
+            <p><ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text></p>
+          </ion-label>
+        </ion-item>
+      </ion-card> 
+      </div>
+  </div>
+</ion-content>
+
+<div class="custom-calender-modal-main" *ngIf="showCalenderModal">
+  <div class="calender-container">
+    <div class="calender-body" class="right-direction">
+      <ion-calendar #calendar [options]="options" canBackwardsSelected="true" (change)="onDaySelect($event)">
+      </ion-calendar>
+      <!-- [events]="currentEvents" -->
+    </div>
+  </div>
+  <div class="clickd-div" (click)="hideCalenderModal()"></div>
+</div>
+
+<div class="custom-modal-main" *ngIf="showProfileModal" (click)="hideUserImageModal($event)">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <div class="image-sec" [ngStyle]="{'background-image': 'url('+student.pic+')'}">
+        <div class="add-image-icon" (click)="takePicture()"
+          *ngIf="userDetails.details.user_type != '2' && userDetails.details.user_type != '7'">
+          <ion-icon name="add-circle"></ion-icon>
+        </div>
+      </div>
+    </div>
+    <div class="custom-modal-content">
+      <h2 style="color:black;">{{student.name}}
+        <!-- <ion-icon *ngIf="editMode" (click)="editStudentClass($event,student)" name="create-outline"></ion-icon> -->
+      </h2>
+      <h2>{{student.course_name}}</h2>
+      <p *ngIf="student.studentBehaviour != ''">{{student.studentBehaviour}}</p>
+      <p>{{'list-student.total_absents' | translate}} : {{student.total_absent}}</p>
+    </div>
+    <div class="custom-modal-footer">
+      <ion-row>
+        <ion-col size="3" class="lefthorizline text-left">
+          <p class="absence-count text-center" style="color:black;">{{student.unacceptable_absent_days}}</p>
+          <p class="absence text-center">{{'list-student.unacceptable_absence' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" class="text-center">
+          <p class="absence-count text-center" style="color:black;">{{student.suspend_days}}</p>
+          <p class="absence text-center">{{'list-student.suspension_days' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" class="text-right">
+          <p class="absence-count text-center" style="color:black;">{{student.medical_days}}</p>
+          <p class="absence text-center">{{'list-student.medical_days' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" text-left class="text-center lefthorizline">
+          <p text-center class="absence-count">{{student.student_points}}</p>
+          <p text-center class="absence">{{'list-student.student_points' | translate}}</p>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</div>
+<div class="custom-modal-main" *ngIf="showNoteModal">
+  <div class="custom-modal">
+    <div class="custom-note-header">
+      <h4>{{'student-details.add_note' | translate}}</h4>
+    </div>
+
+    <div class="custom-note-content">
+      <!-- <span *ngFor="let star of getSelectedStars();let i = index;">
+        <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[i]}" (click)="selectStarsForRating(i)"></ion-icon>
+      </span> -->
+      <div class="note-desc">
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="noteMessage" placeholder="{{'student-details.type_here' | translate}}"></ion-input>
+        </ion-item>
+        <p class="max_length">{{noteMessage?.length}}/45</p>
+      </div>
+    </div>
+    <div class="custom-modal-footer right-direction">
+      <ion-row>
+        <ion-col size="6" text-right>
+         <ion-button expand="block" class="btn-primary" shape="round" color="secondary"  (click)="hideNoteModal()">{{'alertmessages.alert_btn_cancel_text' |
+            translate}}</ion-button> 
+        </ion-col>
+        <ion-col size="6" text-center>
+          <ion-button expand="block" class="btn-secondary" shape="round" color="primary" (click)="addTextNotesNote()">{{'alertmessages.alert_btn_submit_text' | translate}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</div>

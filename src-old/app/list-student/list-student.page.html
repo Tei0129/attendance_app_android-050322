@@ -1,0 +1,217 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button>
+      </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-row>
+      <ion-col size="6" align-self-center no-padding text-right>
+        <div class="title" (click)="openCalenderModal()">{{dateSelected | date: 'mediumDate'}}</div>
+      </ion-col>
+      <ion-col size="6" align-self-center no-padding style="direction: ltr;">
+        <ion-buttons start clear>
+          <ion-button class="small_btn_header" small clear icon-only (click)="enableEditingMode()"
+            *ngIf="(userType == '1' || canEdit) && !editMode && !isHoliday">
+            <ion-icon name="pencil" class="add-circle" item-end color="icon-header"></ion-icon>
+          </ion-button>
+          <ion-button class="small_btn_header" small clear icon-only (click)="registerNewStudent()"
+            *ngIf="userType == '1' || canAddStudent">
+            <ion-icon name="add" class="add-circle" item-end color="icon-header"></ion-icon>
+          </ion-button>
+          <ion-button class="small_btn_header" small clear icon-only (click)="viewNote()">
+            <ion-icon name="document-text-outline" class="add-circle" item-end color="icon-header"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  <ion-list padding no-margin>
+    <ion-row>
+      <ion-col size="4" col-sm-2 align-self-center style="padding-right: 18px;color:black;" class="text-right" text-right>
+        {{courseInfo.name}}
+      </ion-col>
+      <ion-col size="8" col-sm-10 align-self-center>
+      </ion-col>
+      <ion-col size="12" align-self-center>
+        <div class="left-direction checkbox-container" *ngIf="attendanceResponse.semteacher">
+          <div class="checkbox-icon" *ngFor="let sem of getSemArray(); let i = index;"
+            (click)="showTeacherName(attendanceResponse.semteacher['sem-' + (i + 1)])">
+            <div class="sem-number-outer"
+              [ngClass]="{'att-not-marked': attendanceResponse.semteacher['sem-' + (i + 1)] == undefined ,'att-marked': attendanceResponse.semteacher['sem-' + (i + 1)] != undefined }">
+              {{i+1}}</div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+</ion-header>
+
+
+<ion-content mode="md">
+  <div class="main-content">
+    <ion-list padding *ngIf="attendanceResponse.students?.length > 0" margin-top>
+      <ion-row class="right-direction student-card top-col" *ngIf="showAll">
+        <ion-col size="12" align-self-center class="left-direction">
+          <p>{{'list-student.mark_all' | translate}}</p>
+        </ion-col>
+        <ion-col size="12" align-self-center text-right no-padding class="checkbox-area checkbox-all">
+          <div class="left-direction checkbox-container">
+            <div class="checkbox-icon" *ngFor="let sem of getSemArray(); let i = index;"
+              (click)="changeAttendanceStatusAll(i)">
+              <div class="checkbox-remove all-check" [ngClass]="classAll[i]">
+                <ion-icon name="checkmark" class="att-icon" *ngIf="classAll[i]=='present'" color="light"></ion-icon>
+                <ion-icon name="close" class="att-icon" *ngIf="classAll[i]=='absent'" color="light"></ion-icon>
+                <ion-icon name="remove" class="att-icon" *ngIf="classAll[i]=='delay'" color="light"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="right-direction student-card"
+        *ngFor="let student of attendanceResponse.students; let sno = index;">
+        <ion-col size="10" col-sm-11>
+          <ion-row>
+             <ion-col size="3" align-self-center class="text-center" class="left-direction">
+              <ion-button fill="clear" (click)="presentNoteActionSheet(student)">
+                <ion-icon name="add-circle" class="add-note" item-end color="icon-header"></ion-icon>
+            </ion-button>
+            </ion-col> 
+            <ion-col size="9" align-self-center class="text-right" class="left-direction"
+              (click)="openStudentDetail(student.sid)">
+              <h4><span class="serial-number">{{sno+1}}.</span> {{student.name}}</h4>
+              <p class="student-behaviour">{{student.studentBehaviour}}</p>
+            </ion-col>
+
+          </ion-row>
+        </ion-col>
+        <ion-col size="2" col-sm-1 align-self-center>
+          <ion-item class="item-img" lines="none">
+            <ion-avatar (click)="openUserImageModal(student)">
+              <img [src]="student.pic">
+            </ion-avatar>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" align-self-center text-right no-padding class="checkbox-area">
+          <div class="left-direction checkbox-container">
+            <div class="checkbox-icon" *ngFor="let sem of getSemArray(); let i = index;"
+              (click)="changeAttendanceStatus(student, i,sno)">
+              <div class="checkbox-remove"
+                [ngClass]="{'present': student.sheet['cem-'+ (i+1)] == '1', 'absent': student.sheet['cem-'+ (i+1)] == '0', 'delay': student.sheet['cem-'+ (i+1)] == '3', '': student.sheet['cem-'+ (i+1)] == 'undefined'}">
+                <ion-icon name="checkmark" class="att-icon" *ngIf="student.sheet['cem-'+ (i+1)] == '1'" color="light">
+                </ion-icon>
+                <ion-icon name="close" class="att-icon" *ngIf="student.sheet['cem-'+ (i+1)] == '0'" color="light">
+                </ion-icon>
+                <ion-icon name="remove" class="att-icon" *ngIf="student.sheet['cem-'+ (i+1)] == '3'" color="light">
+                </ion-icon>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-button expand="block" class="btn-primary margin" color="primary" (click)="submitAttendance()"
+        *ngIf="!isHoliday && userType != '7'">{{'list-student.submitbtn' | translate}}</ion-button>
+    </ion-list>
+    <ion-label margin-top padding-top item-center class="norecord-found"
+      *ngIf="attendanceResponse.students?.length == 0">{{noDataFound}}
+    </ion-label>
+    <div margin-top padding-top item-center class="students" id="students" *ngIf="show_loading"> 
+      <ion-card  class="text-left body-font card heigt-min" *ngFor="let dummy of ' '.repeat(20).split(''), let x = index">		
+        <ion-item>
+          <ion-avatar slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <h4><ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text></h4>
+            <p><ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text></p>
+            <p><ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text></p>
+          </ion-label>
+        </ion-item>
+      </ion-card> 
+      </div>
+  </div>
+</ion-content>
+
+<div class="custom-calender-modal-main" *ngIf="showCalenderModal">
+  <div class="calender-container">
+    <div class="calender-body" class="right-direction">
+      <ion-calendar #calendar [options]="options" canBackwardsSelected="true" (change)="onDaySelect($event)">
+      </ion-calendar>
+      <!-- [events]="currentEvents" -->
+    </div>
+  </div>
+  <div class="clickd-div" (click)="hideCalenderModal()"></div>
+</div>
+
+<div class="custom-modal-main" *ngIf="showProfileModal" (click)="hideUserImageModal($event)">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <div class="image-sec" [ngStyle]="{'background-image': 'url('+student.pic+')'}">
+        <div class="add-image-icon" (click)="takePicture()"
+          *ngIf="userDetails.details.user_type != '2' && userDetails.details.user_type != '7'">
+          <ion-icon name="add-circle"></ion-icon>
+        </div>
+      </div>
+    </div>
+    <div class="custom-modal-content">
+      <h2 style="color:black;">{{student.name}}
+        <!-- <ion-icon *ngIf="editMode" (click)="editStudentClass($event,student)" name="create-outline"></ion-icon> -->
+      </h2>
+      <h2 *ngIf="editMode" style="color:black;">{{student.course_name}}</h2>
+      <p *ngIf="student.studentBehaviour != ''">{{student.studentBehaviour}}</p>
+      <p style="color:black;">{{'list-student.total_absents' | translate}} : {{student.total_absent}}</p>
+    </div>
+    <div class="custom-modal-footer">
+      <ion-row>
+        <ion-col size="3" class="lefthorizline text-left">
+          <p class="absence-count text-center" style="color:black;">{{student.unacceptable_absent_days}}</p>
+          <p class="absence text-center">{{'list-student.unacceptable_absence' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" class="text-center">
+          <p class="absence-count text-center" style="color:black;">{{student.suspend_days}}</p>
+          <p class="absence text-center">{{'list-student.suspension_days' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" class="text-right">
+          <p class="absence-count text-center" style="color:black;">{{student.medical_days}}</p>
+          <p class="absence text-center">{{'list-student.medical_days' | translate}}</p>
+        </ion-col>
+        <ion-col size="3" text-left class="text-center lefthorizline">
+          <p text-center class="absence-count">{{student.student_points}}</p>
+          <p text-center class="absence">{{'list-student.student_points' | translate}}</p>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</div>
+<div class="custom-modal-main" *ngIf="showNoteModal">
+  <div class="custom-modal">
+    <div class="custom-note-header">
+      <h4 style="color:#000;">{{'student-details.add_note' | translate}}</h4>
+    </div>
+
+    <div class="custom-note-content">
+      <!-- <span *ngFor="let star of getSelectedStars();let i = index;">
+        <ion-icon name="star" class="rating-star" [ngStyle]="{'color':selections[i]}" (click)="selectStarsForRating(i)"></ion-icon>
+      </span> -->
+      <div class="note-desc">
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="noteMessage" placeholder="{{'student-details.type_here' | translate}}"></ion-input>
+        </ion-item>
+        <p class="max_length">{{noteMessage?.length}}/45</p>
+      </div>
+    </div>
+    <div class="custom-modal-footer right-direction">
+      <ion-row>
+        <ion-col size="6" text-right>
+         <ion-button expand="block" class="btn-primary" shape="round" color="secondary"  (click)="hideNoteModal()">{{'alertmessages.alert_btn_cancel_text' |
+            translate}}</ion-button> 
+        </ion-col>
+        <ion-col size="6" text-center>
+          <ion-button expand="block" class="btn-secondary" shape="round" color="primary" (click)="addTextNotesNote()">{{'alertmessages.alert_btn_submit_text' | translate}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</div>
